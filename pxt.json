@@ -8,6 +8,9 @@
         "files.cpp",
         "files.ts"
     ],
+    "testFiles": [
+        "tests.ts"
+    ],
     "public": true,
     "dependencies": {
         "core": "*"
