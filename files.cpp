@@ -19,7 +19,6 @@ namespace files {
         MicroBitFile f(filename);
         f.append(text);
         f.append("\r\n");
-        f.close();
     }
 
     /**
@@ -34,7 +33,6 @@ namespace files {
 
         MicroBitFile f(filename);
         f.append(text);
-        f.close();
     }
 
     /**
