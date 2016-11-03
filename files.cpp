@@ -46,6 +46,5 @@ namespace files {
     void remove(StringData* filename) {
         MicroBitFile f(filename);
         f.remove();        
-        f.close();
     }
 }

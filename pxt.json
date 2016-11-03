@@ -1,5 +1,5 @@
 {
-    "name": "files",
+    "name": "filesystem",
     "description": "File system",
     "files": [
         "README.md",
