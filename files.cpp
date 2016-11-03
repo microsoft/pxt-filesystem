@@ -19,6 +19,7 @@ namespace files {
         MicroBitFile f(filename);
         f.append(text);
         f.append("\r\n");
+        f.close();
     }
 
     /**
@@ -33,6 +34,7 @@ namespace files {
 
         MicroBitFile f(filename);
         f.append(text);
+        f.close();
     }
 
     /**
@@ -44,5 +46,6 @@ namespace files {
     void remove(StringData* filename) {
         MicroBitFile f(filename);
         f.remove();        
+        f.close();
     }
 }
