@@ -1,4 +1,5 @@
 #include "pxt.h"
+#include "ksbit.h"
 #include "MicroBitFile.h"
 #include "MicroBitFileSystem.h"
 
@@ -14,7 +15,7 @@ namespace files
 // built-in size computation for file system
 // does not take into account size changes
 // for compiled code
-initFileSystem()
+void initFileSystem()
 {
     if (MicroBitFileSystem::defaultFileSystem == NULL)
     {
