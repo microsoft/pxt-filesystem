@@ -32,12 +32,10 @@ void initFileSystem()
 //% blockExternalInputs=1 weight=90 blockGap=8
 void appendLine(StringData *filename, StringData *text)
 {
-    if (!text)
-        return;
-
     initFileSystem();
     MicroBitFile f(filename);
-    f.append(text);
+    if (text)
+        f.append(text);
     f.append("\r\n");
     f.close();
 }
