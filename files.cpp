@@ -19,7 +19,8 @@ void initFileSystem()
 {
     if (MicroBitFileSystem::defaultFileSystem == NULL)
     {
-        MicroBitFileSystem(pxt::afterProgramPage());
+        //printf("Init FS: %x %d\n", pxt::afterProgramPage(), pxt::programSize());
+        new MicroBitFileSystem(pxt::afterProgramPage());
     }
 }
 
