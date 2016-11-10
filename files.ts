@@ -13,4 +13,21 @@ namespace files {
     export function appendNumber(filename: string, value: number) {
         files.appendString(filename, value.toString());
     }
+
+    export class FileChunk {
+        /**
+         * the current line
+         */
+        line: string;
+    }
+
+    /**
+     * Reads the file line by line and calls reader on each line
+     **/
+    //% blockId=fs_read_line block="file %filename|read lines"
+    //% mutate=true
+    //% mutateText=FileChunk
+    //% mutateDefaults="line"    
+    export function readLines(filename: string, reader: (chunk: FileChunk) => void) {
+    }
 }
