@@ -1,6 +1,6 @@
 {
     "name": "filesystem",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "File system",
     "files": [
         "README.md",
