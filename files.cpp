@@ -60,6 +60,23 @@ void appendString(StringData *filename, StringData *text)
 }
 
 /**
+* Reads the content of the file to send it to serial
+* @param filename file name, eg: "output.txt"
+*/
+//% blockId="fs_write_to_serial" block="file %filename|read to serial"
+//% weight=80
+void readToSerial(StringData* filename) {
+    initFileSystem();
+    MicroBitFile f(filename);
+    char buf[32];
+    int read = 0;
+    while((read = f.read(buf, 32 * sizeof(char))) > 0) {
+         uBit.serial.send((uint8_t*)buf, read * sizeof(char));
+    }   
+    f.close();    
+}
+
+/**
     * Removes the file. There is no undo for this operation.
     * @param filename name of the file to remove, eg: "output.txt"
     */

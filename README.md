@@ -29,6 +29,14 @@ files.appendString("data.txt", "Hello");
 files.appendNumber("data.txt", 42);
 ```
 
+### Reading data
+
+* send the content of a file to serial
+
+```blocks
+files.readToSerial("data.txt");
+```
+
 ## Example: Writing accelerometer data
 
 The following program allows to collect accelerometer data and save it in a ``data.csv`` file. 
@@ -40,18 +48,22 @@ let file = "data.csv";
 input.onButtonPressed(Button.A, () => {    
     basic.pause(3000);
     files.remove(file);
-    files.appendLine("Time\tAcceleration");
-    for(let i = 0; i < 720; ++i) {
-        let t = control.runningTime();
-        let ay = input.acceleration(Dimention.Y);
+    files.appendLine(file, "Time\tAcceleration");
+    for (let i = 0; i < 100; ++i) {
+        let t = input.runningTime();
+        let ay = input.acceleration(Dimension.Y);
         files.appendNumber(file, t);
         files.appendString(file, "\t");
         files.appendNumber(file, ay);
-        files.appendLine(file, ""):
-        
-        control.waitMicros(file, 20);
+        files.appendLine(file, "");
+
+        control.waitMicros(20);
     }
 });
+input.onButtonPressed(Button.B, () => {
+    files.readToSerial(file);
+    basic.showString(":)")
+})
 ```
 
 ## Supported targets

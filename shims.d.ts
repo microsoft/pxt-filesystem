@@ -26,6 +26,14 @@ declare namespace files {
     function appendString(filename: string, text: string): void;
 
     /**
+     * Reads the content of the file to send it to serial
+     * @param filename file name, eg: "output.txt"
+     */
+    //% blockId="fs_write_to_serial" block="file %filename|read to serial"
+    //% weight=80 shim=files::readToSerial
+    function readToSerial(filename: string): void;
+
+    /**
      * Removes the file. There is no undo for this operation.
      * @param filename name of the file to remove, eg: "output.txt"
      */

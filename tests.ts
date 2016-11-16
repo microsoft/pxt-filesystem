@@ -1,4 +1,17 @@
-// tests go here; this will not be compiled when this package is used as a library
-files.appendString("output.txt", "appendstring");
-files.appendNumber("output.txt", 42);
-files.appendLine("output.txt", "appendline");
+const file = "data.csv";
+input.onButtonPressed(Button.B, () => {
+    files.remove(file)
+    files.appendLine(file, "Time\tAcceleration");
+    for (let i = 0; i < 50; ++i) {
+        let t = input.runningTime();
+        let ay = input.acceleration(Dimension.Y);
+        files.appendNumber(file, t);
+        files.appendString(file, "\t");
+        files.appendNumber(file, ay);
+        files.appendLine(file, "");
+
+        control.waitMicros(20);
+    }
+    files.readToSerial(file);
+    basic.showString(":)")
+})
