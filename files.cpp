@@ -88,4 +88,51 @@ void remove(StringData *filename)
     MicroBitFile f(filename);
     f.remove();
 }
+
+/**
+* Creates a directory
+* @param name full qualified path to the new directory
+*/
+//% advanced=true weight=10
+//% blockId=files_create_directory block="files create directory %name"
+void createDirectory(StringData* name) {
+    initFileSystem();
+    MicroBitFileSystem::defaultFileSystem->createDirectory(ManagedString(name).toCharArray());
+}
+
+/** 
+* Writes a number settings
+* @param name name of the setting, must be filename compatible, e.g.: setting
+* @param value value of the setting
+*/
+//% blockId=settings_write_number block="settings save number %name|as %value"
+//% weight=20
+void settingsSaveNumber(StringData* name, int value) {
+    initFileSystem();
+    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
+    MicroBitFile f("settings/" + ManagedString(name));
+    f.write(value);
+    f.close();
+}
+
+/**
+* Reads a number settings, -1 if not found.
+* @param name name of the settings, must be filename compatible, e.g.: setting
+*/
+//% blockId=settings_read_number block="settings read number %name"
+//% weight=19
+int settingsReadNumber(StringData* name) {
+    initFileSystem();
+    MicroBitFile f("settings/" + ManagedString(name));
+    if (!f.isValid()) 
+        return -1;
+    ManagedString v;
+    ManagedString buff;
+    do {
+        ManagedString buff = f.read(32);        
+        v = v + buff;
+    } while(buff.length() > 0);
+    return atoi(v.toCharArray());
+}
+
 }

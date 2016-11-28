@@ -37,6 +37,23 @@ files.appendNumber("data.txt", 42);
 files.readToSerial("data.txt");
 ```
 
+### Settings
+
+The package allows to save and load number settings based on the file system
+
+* save setting value
+
+```blocks
+files.settingsSaveNumber("calibrated", 1)
+```
+
+* read setting value
+
+```blocks
+var calibrated = files.settingsReadNumber("calibrated");
+```
+
+
 ## Example: Writing accelerometer data
 
 The following program allows to collect accelerometer data and save it in a ``data.csv`` file. 
