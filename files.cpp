@@ -1,5 +1,4 @@
 #include "pxt.h"
-#include "ksbit.h"
 #include "MicroBitFile.h"
 #include "MicroBitFileSystem.h"
 
