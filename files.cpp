@@ -28,7 +28,7 @@ void initFileSystem()
     * @param filename file name, eg: "output.txt"
     * @param text the string to append to the end of the file
     */
-//% blockId="files_append_line" block="file %filename|append string %text"
+//% blockId="files_append_line" block="file %filename|append line %text"
 //% blockExternalInputs=1 weight=90 blockGap=8
 void appendLine(StringData *filename, StringData *text)
 {
@@ -41,11 +41,11 @@ void appendLine(StringData *filename, StringData *text)
 }
 
 /**
-    * Appends text and a new line to a file
+    * Appends text to a file
     * @param filename file name, eg: "output.txt"
     * @param text the string to append to the end of the file
     */
-//% blockId="fs_append_string" block="file %filename|append line %text"
+//% blockId="fs_append_string" block="file %filename|append string %text"
 //% blockExternalInputs=1 weight=86 blockGap=8
 void appendString(StringData *filename, StringData *text)
 {
