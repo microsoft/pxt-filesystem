@@ -10,21 +10,24 @@ The package allows to read and write files to the @boardname@ flash.
 
 The entire file system content is ERASED when a new .hex file is download onto the @boardname@.
 
-###
+### ~
 
 ### Writing data
 
 * append text and a new line character
+
 ```blocks
 files.appendLine("data.txt", "Hello");
 ```
 
 * append text to the file
+
 ```blocks
 files.appendString("data.txt", "Hello");
 ```
 
 * append a number (as text) to the file
+
 ```blocks
 files.appendNumber("data.txt", 42);
 ```
