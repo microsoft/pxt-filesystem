@@ -1,7 +1,7 @@
 /**
 * File system operations
 */
-//% weight=5 color=#002050
+//% weight=5 color=#002050 icon="\uf0a0"
 namespace files {
     /**
     * Appends a number to a file
