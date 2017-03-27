@@ -10,23 +10,6 @@ using namespace pxt;
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files
 {
-// Initializes file system. Must be called before any FS operation.
-// built-in size computation for file system
-// does not take into account size changes
-// for compiled code
-void initFileSystem()
-{
-    if (MicroBitFileSystem::defaultFileSystem == NULL)
-    {
-        /*
-        char buf[128];
-        sprintf(buf, "Init FS: %x %d\r\n", pxt::afterProgramPage(), pxt::programSize());
-        uBit.serial.send(ManagedString(buf));
-        */
-        new MicroBitFileSystem(pxt::afterProgramPage());
-    }
-}
-
 /**
     * Appends text and a new line to a file
     * @param filename file name, eg: "output.txt"
@@ -36,7 +19,6 @@ void initFileSystem()
 //% blockExternalInputs=1 weight=90 blockGap=8
 void appendLine(StringData *filename, StringData *text)
 {
-    initFileSystem();
     MicroBitFile f(filename);
     if (text)
         f.append(text);
@@ -56,7 +38,6 @@ void appendString(StringData *filename, StringData *text)
     if (!text)
         return;
 
-    initFileSystem();
     MicroBitFile f(filename);
     f.append(text);
     f.close();
@@ -69,7 +50,6 @@ void appendString(StringData *filename, StringData *text)
 //% blockId="fs_write_to_serial" block="file %filename|read to serial"
 //% weight=80
 void readToSerial(StringData* filename) {
-    initFileSystem();
     MicroBitFile f(filename);
     char buf[32];
     int read = 0;
@@ -87,7 +67,6 @@ void readToSerial(StringData* filename) {
 //% weight=50 advanced=true
 void remove(StringData *filename)
 {
-    initFileSystem();
     MicroBitFile f(filename);
     f.remove();
 }
@@ -99,7 +78,6 @@ void remove(StringData *filename)
 //% advanced=true weight=10
 //% blockId=files_create_directory block="files create directory %name"
 void createDirectory(StringData* name) {
-    initFileSystem();
     MicroBitFileSystem::defaultFileSystem->createDirectory(ManagedString(name).toCharArray());
 }
 
@@ -111,7 +89,6 @@ void createDirectory(StringData* name) {
 //% blockId=settings_write_number block="settings save number %name|as %value"
 //% weight=20
 void settingsSaveNumber(StringData* name, int value) {
-    initFileSystem();
     MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
     MicroBitFile f("settings/" + ManagedString(name));
     f.write(value);
@@ -125,7 +102,6 @@ void settingsSaveNumber(StringData* name, int value) {
 //% blockId=settings_read_number block="settings read number %name"
 //% weight=19
 int settingsReadNumber(StringData* name) {
-    initFileSystem();
     MicroBitFile f("settings/" + ManagedString(name));
     if (!f.isValid()) 
         return -1;
