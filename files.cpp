@@ -5,6 +5,30 @@
 using namespace pxt;
 
 /**
+* File seek offset modifier
+*/
+enum FileSystemOpenFlags {
+    //% block=read
+    Read = MB_READ ,
+    //% block=write
+    Write = MB_WRITE,
+    //% block=end
+    Create = MB_CREAT
+}
+
+/**
+* File seek offset modifier
+*/
+enum FileSystemSeekFlags {
+    //% block=set
+    Set = MB_SEEK_SET,
+    //% block=current
+    Current = MB_SEEK_CUR,
+    //% block=end
+    End = MB_SEEK_END
+}
+
+/**
 * File system operations
 */
 //% weight=5 color=#002050 icon="\uf0a0"
@@ -136,6 +160,34 @@ int settingsReadNumber(StringData* name) {
         v = v + buff;
     } while(buff.length() > 0);
     return atoi(v.toCharArray());
+}
+
+//% weight=0
+int fsOpen(StringData* path, int flags) {
+    initFileSystem();
+    return MicroBitFileSystem::open(path, flags);
+}
+
+//% weight=0
+int fsFlush(int fd) {
+    if (!fd) return MICROBIT_INVALID_PARAMETER;
+    initFileSystem();
+    return MicrobitFileSystem::flush(fd);
+}
+
+//% weight=0
+int fsClose(int fd) {
+    if (!fd) return MICROBIT_INVALID_PARAMETER;
+    initFileSystem();
+    return MicrobitFileSystem::close(fd);
+}
+
+//% weight=0
+int fsWrite(int fd, Buffer buffer) {
+    if (!fd) return MICROBIT_INVALID_PARAMETER;
+    initFileSystem();
+    ManagedBuffer buf(buffer);
+    return MicrobitFileSystem::write(fd, buf, buf.length)
 }
 
 }
