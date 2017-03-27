@@ -37,7 +37,6 @@ void appendString(StringData *filename, StringData *text)
 {
     if (!text)
         return;
-
     MicroBitFile f(filename);
     f.append(text);
     f.close();
@@ -50,7 +49,7 @@ void appendString(StringData *filename, StringData *text)
 //% blockId="fs_write_to_serial" block="file %filename|read to serial"
 //% weight=80
 void readToSerial(StringData* filename) {
-    MicroBitFile f(filename);
+    MicroBitFile f(filename, MB_READ);
     char buf[32];
     int read = 0;
     while((read = f.read(buf, 32 * sizeof(char))) > 0) {
@@ -89,8 +88,7 @@ void createDirectory(StringData* name) {
 //% blockId=settings_write_number block="settings save number %name|as %value"
 //% weight=20
 void settingsSaveNumber(StringData* name, int value) {
-    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
-    MicroBitFile f("settings/" + ManagedString(name), MB_WRITE | MB_CREAT);
+    MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_WRITE | MB_CREAT);
     f.write(ManagedString(value));
     f.close();
 }
@@ -102,7 +100,7 @@ void settingsSaveNumber(StringData* name, int value) {
 //% blockId=settings_read_number block="settings read number %name"
 //% weight=19
 int settingsReadNumber(StringData* name) {
-    MicroBitFile f("settings/" + ManagedString(name), MB_READ | MB_CREAT);
+    MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_READ);
     if (!f.isValid()) 
         return -1;
     ManagedString v;
