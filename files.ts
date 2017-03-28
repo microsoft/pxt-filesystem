@@ -16,11 +16,12 @@ namespace files {
 
     /**
      * Opens a new file
-     * @param filename file name to open
+     * @param filename file name to open, eg: "data.txt"
      */    
+    //% blockId=fs_open block="open %filename" advanced=true
     export function open(filename: string): File {
         const f = new File(filename);
-        f.open(FileSystemOpenFlags.Read);
+        f.open();
         return f;
     }
 
@@ -34,31 +35,43 @@ namespace files {
         /**
          * Creates a new file instance
          */
-        constructor(path: string, fd: number) {
+        constructor(path: string) {
             this.path = path;
-            this.fd = fd;
+            this.fd = -1;
         }
 
         /**
          * Opens the file
          */
-        public open(flags: number): void {
-            // already opened
-            this.fd = files.fsOpen(this.path, flags);
+        //% blockId=fs_file_open block="%this|open" advanced=true
+        public open(): void {
+            if (this.fd < 0)
+                this.fd = files.fsOpen(this.path);
         }
 
         /**
          * Flushes all pending write operations to FLASH
          */
-        public flush() : void {
+        //% blockId=fs_file_flush block="%this|close" advanced=true
+        public flush(): void {
             files.fsFlush(this.fd);
         }
 
         /**
          * Closes the file and writes all pending data to FLASH
          */
+        //% blockId=fs_file_close block="%this|close" advanced=true
         public close(): void {            
             files.fsClose(this.fd);
+            this.fd = 0;
+        }
+
+        /**
+         * Removes the current file from the FLASH
+         */
+        //% blockId=fs_file_remove block="%this|remove" advanced=true
+        public remove(): void {
+            files.fsRemove(this.fd);
             this.fd = 0;
         }
 
@@ -66,6 +79,7 @@ namespace files {
          * Move the current position of a file handle, to be used for
          * subsequent read/write calls.
          */
+        //% blockId=fs_file_seek block="%this|seek offset %offset|from %flags" advanced=true
         public seek(offset: number, flags: FileSystemSeekFlags): number {
             return files.fsSeek(this.fd, offset, flags);
         }
@@ -73,6 +87,7 @@ namespace files {
         /**
          * Write data to the file.
          */
+        //% blockId=fs_file_write_ buffer block="%this|write buffer %buffer" advanced=true
         public writeBuffer(buffer: Buffer): number {
             return files.fsWrite(buffer);
         }

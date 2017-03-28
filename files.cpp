@@ -7,18 +7,6 @@ using namespace pxt;
 /**
 * File seek offset modifier
 */
-enum FileSystemOpenFlags {
-    //% block=read
-    Read = MB_READ ,
-    //% block=write
-    Write = MB_WRITE,
-    //% block=end
-    Create = MB_CREAT
-}
-
-/**
-* File seek offset modifier
-*/
 enum FileSystemSeekFlags {
     //% block=set
     Set = MB_SEEK_SET,
@@ -137,31 +125,45 @@ int settingsReadNumber(StringData* name) {
 }
 
 //% weight=0
-int fsOpen(StringData* path, int flags) {
-    initFileSystem();
-    return MicroBitFileSystem::open(path, flags);
+int fsOpen(StringData* path) {
+    return MicroBitFileSystem::open(path);
 }
 
 //% weight=0
 int fsFlush(int fd) {
-    if (!fd) return MICROBIT_INVALID_PARAMETER;
-    initFileSystem();
+    if (fd <= 0) return fd;
+
     return MicrobitFileSystem::flush(fd);
+}
+
+
+int fsRemove(int fd) {
+    if (fd <= 0) return fd;
+
+    return MicrobitFileSystem::remove(fd);
 }
 
 //% weight=0
 int fsClose(int fd) {
-    if (!fd) return MICROBIT_INVALID_PARAMETER;
-    initFileSystem();
+    if (fd <= 0) return fd;
+
     return MicrobitFileSystem::close(fd);
 }
 
 //% weight=0
+int fsSeek(int fd, int offset, int flags) {
+    if (fd <= 0) return fd;
+
+    return MicrobitFileSystem::seek(fd, offset, flags);
+}
+
+//% weight=0
 int fsWrite(int fd, Buffer buffer) {
-    if (!fd) return MICROBIT_INVALID_PARAMETER;
-    initFileSystem();
+    if (fd <= 0) return fd;
+
     ManagedBuffer buf(buffer);
-    return MicrobitFileSystem::write(fd, buf, buf.length)
+    auto pBuf = buf.leakData();
+    return MicrobitFileSystem::write(fd, pBuf->payload, pBuf->length);
 }
 
 }
