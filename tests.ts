@@ -1,7 +1,8 @@
 const file = "data.csv";
+files.remove(file)
+files.appendLine(file, "Time\tAcceleration");
 input.onButtonPressed(Button.B, () => {
-    files.remove(file)
-    files.appendLine(file, "Time\tAcceleration");
+    basic.showString("o")
     for (let i = 0; i < 50; ++i) {
         let t = input.runningTime();
         let ay = input.acceleration(Dimension.Y);
