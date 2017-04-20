@@ -28,7 +28,8 @@ namespace files {
     /**
      * A file on flash
      */
-    class File {
+    //%
+    export class File {
         private path: string;
         private fd: number;
 
@@ -63,16 +64,16 @@ namespace files {
         //% blockId=fs_file_close block="%this|close" advanced=true
         public close(): void {            
             files.fsClose(this.fd);
-            this.fd = 0;
+            this.fd = -1;
         }
 
         /**
-         * Removes the current file from the FLASH
+         * Removes the file
          */
         //% blockId=fs_file_remove block="%this|remove" advanced=true
         public remove(): void {
-            files.fsRemove(this.fd);
-            this.fd = 0;
+            files.fsRemove(this.path);
+            this.fd = -1;
         }
 
         /**
@@ -89,7 +90,7 @@ namespace files {
          */
         //% blockId=fs_file_write_ buffer block="%this|write buffer %buffer" advanced=true
         public writeBuffer(buffer: Buffer): number {
-            return files.fsWrite(buffer);
+            return files.fsWrite(this.fd, buffer);
         }
     }
 }

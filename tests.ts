@@ -37,3 +37,7 @@ serial.writeValue("test", test);
 let sertest = files.settingsReadNumber("test");
 serial.writeValue("sertest", sertest);
 control.assert(test == sertest);
+
+let f = files.open("oo.txt");
+f.seek(0, FileSystemSeekFlags.End);
+f.flush();

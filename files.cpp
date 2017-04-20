@@ -14,7 +14,7 @@ enum FileSystemSeekFlags {
     Current = MB_SEEK_CUR,
     //% block=end
     End = MB_SEEK_END
-}
+};
 
 /**
 * File system operations
@@ -22,6 +22,17 @@ enum FileSystemSeekFlags {
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files
 {
+// Initializes file system. Must be called before any FS operation.		
+// built-in size computation for file system		
+// does not take into account size changes		
+// for compiled code		
+void initFileSystem()		
+{		
+    if (MicroBitFileSystem::defaultFileSystem == NULL)		
+    {		
+        new MicroBitFileSystem(pxt::afterProgramPage());		
+    }		
+}    
 /**
     * Appends text and a new line to a file
     * @param filename file name, eg: "output.txt"
@@ -109,6 +120,7 @@ void createDirectory(StringData* name) {
 //% blockId=settings_write_number block="settings save number %name|as %value"
 //% weight=20
 void settingsSaveNumber(StringData* name, int value) {
+    initFileSystem();
     MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_WRITE | MB_CREAT);
     f.write(ManagedString(value));
     f.close();
@@ -121,6 +133,7 @@ void settingsSaveNumber(StringData* name, int value) {
 //% blockId=settings_read_number block="settings read number %name"
 //% weight=19
 int settingsReadNumber(StringData* name) {
+    initFileSystem();
     MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_READ);
     if (!f.isValid()) 
         return -1;
@@ -133,46 +146,70 @@ int settingsReadNumber(StringData* name) {
     return atoi(v.toCharArray());
 }
 
+/**
+*
+*/
 //% weight=0
 int fsOpen(StringData* path) {
-    return MicroBitFileSystem::open(path);
+    initFileSystem();
+    ManagedString fn(path);
+    return MicroBitFileSystem::defaultFileSystem->open(fn.toCharArray(), MB_READ|MB_WRITE|MB_CREAT);
 }
 
+/**
+*
+*/
 //% weight=0
 int fsFlush(int fd) {
     if (fd <= 0) return fd;
 
-    return MicrobitFileSystem::flush(fd);
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->flush(fd);
 }
 
-
-int fsRemove(int fd) {
-    if (fd <= 0) return fd;
-
-    return MicrobitFileSystem::remove(fd);
-}
-
+/**
+*
+*/
 //% weight=0
 int fsClose(int fd) {
     if (fd <= 0) return fd;
 
-    return MicrobitFileSystem::close(fd);
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->close(fd);
 }
 
+/**
+*
+*/
+//% weight=0
+int fsRemove(StringData* name) {
+    initFileSystem();
+    ManagedString fn(name);
+    return MicroBitFileSystem::defaultFileSystem->remove(fn.toCharArray());
+}
+
+/**
+*
+*/
 //% weight=0
 int fsSeek(int fd, int offset, int flags) {
     if (fd <= 0) return fd;
 
-    return MicrobitFileSystem::seek(fd, offset, flags);
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->seek(fd, offset, flags);
 }
 
+/**
+*
+*/
 //% weight=0
 int fsWrite(int fd, Buffer buffer) {
     if (fd <= 0) return fd;
 
+    initFileSystem();
     ManagedBuffer buf(buffer);
     auto pBuf = buf.leakData();
-    return MicrobitFileSystem::write(fd, pBuf->payload, pBuf->length);
+    return MicroBitFileSystem::defaultFileSystem->write(fd, pBuf->payload, pBuf->length);
 }
 
 }

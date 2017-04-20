@@ -65,6 +65,42 @@ declare namespace files {
     //% blockId=settings_read_number block="settings read number %name"
     //% weight=19 shim=files::settingsReadNumber
     function settingsReadNumber(name: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsOpen
+    function fsOpen(path: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsFlush
+    function fsFlush(fd: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsClose
+    function fsClose(fd: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsRemove
+    function fsRemove(name: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsSeek
+    function fsSeek(fd: number, offset: number, flags: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 shim=files::fsWrite
+    function fsWrite(fd: number, buffer: Buffer): number;
 }
 
 // Auto-generated. Do not edit. Really.
