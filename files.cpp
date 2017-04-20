@@ -121,7 +121,8 @@ void createDirectory(StringData* name) {
 //% weight=20
 void settingsSaveNumber(StringData* name, int value) {
     initFileSystem();
-    MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_WRITE | MB_CREAT);
+    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
+    MicroBitFile f("settings/" + ManagedString(name), MB_WRITE | MB_CREAT);
     f.write(ManagedString(value));
     f.close();
 }
@@ -134,7 +135,8 @@ void settingsSaveNumber(StringData* name, int value) {
 //% weight=19
 int settingsReadNumber(StringData* name) {
     initFileSystem();
-    MicroBitFile f(ManagedString("settings") + ManagedString(name), MB_READ);
+    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
+    MicroBitFile f("settings/" + ManagedString(name), MB_READ);
     if (!f.isValid()) 
         return -1;
     ManagedString v;
