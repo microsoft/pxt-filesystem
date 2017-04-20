@@ -20,3 +20,9 @@ input.onButtonPressed(Button.B, () => {
     files.readToSerial(file);
     basic.showString(":)")
 })
+let test = Math.random(1000);
+files.settingsSaveNumber("test", test);
+serial.writeValue("test", test);
+let sertest = files.settingsReadNumber("test");
+serial.writeValue("sertest", sertest);
+control.assert(test == sertest);
