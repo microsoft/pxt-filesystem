@@ -1,10 +1,9 @@
+
 const file = "data.csv";
-input.onButtonPressed(Button.A, () => {
+input.onButtonPressed(Button.B, () => {
     files.remove(file)
     files.readToSerial(file);
-    basic.showString("v");
-})    
-input.onButtonPressed(Button.B, () => {
+    serial.writeLine("");
     basic.showString("o")
     for (let i = 0; i < 10; ++i) {
         let t = input.runningTime();
@@ -26,3 +25,11 @@ serial.writeValue("test", test);
 let sertest = files.settingsReadNumber("test");
 serial.writeValue("sertest", sertest);
 control.assert(test == sertest);
+
+const fn = "out2.txt";
+input.onButtonPressed(Button.A, () => {
+    basic.showString("o")
+    files.appendLine(fn, "hello");
+    serial.writeString("[")
+    files.readToSerial(fn)
+})

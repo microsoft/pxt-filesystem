@@ -54,9 +54,6 @@ void appendLine(StringData *filename, StringData *text)
 //% blockExternalInputs=1 weight=86 blockGap=8
 void appendString(StringData *filename, StringData *text)
 {
-    if (!text)
-        return;
-
     initFileSystem();
     ManagedString fn(filename);
     ManagedString t(text);
@@ -137,7 +134,7 @@ int settingsReadNumber(StringData* name) {
     ManagedString v;
     ManagedString buff;
     do {
-        ManagedString buff = f.read(32);        
+        buff = f.read(32);        
         v = v + buff;
     } while(buff.length() > 0);
     return atoi(v.toCharArray());
