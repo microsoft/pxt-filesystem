@@ -9,7 +9,7 @@ using namespace pxt;
 */
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files
-{
+{    
 // Initializes file system. Must be called before any FS operation.
 // built-in size computation for file system
 // does not take into account size changes
@@ -18,11 +18,6 @@ void initFileSystem()
 {
     if (MicroBitFileSystem::defaultFileSystem == NULL)
     {
-        /*
-        char buf[128];
-        sprintf(buf, "Init FS: %x %d\r\n", pxt::afterProgramPage(), pxt::programSize());
-        uBit.serial.send(ManagedString(buf));
-        */
         new MicroBitFileSystem(pxt::afterProgramPage());
     }
 }

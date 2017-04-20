@@ -1,4 +1,4 @@
-
+/*
 const file = "data.csv";
 input.onButtonPressed(Button.B, () => {
     files.remove(file)
@@ -32,4 +32,17 @@ input.onButtonPressed(Button.A, () => {
     files.appendLine(fn, "hello");
     serial.writeString("[")
     files.readToSerial(fn)
+})
+*/
+
+const f = "output.txt";
+input.onButtonPressed(Button.A, () => {
+    files.appendLine(f, "hello")
+    serial.writeString("W")
+    basic.showString("W")
+})
+input.onButtonPressed(Button.B, () => {
+    files.readToSerial(f)
+    serial.writeString("Hi")
+    basic.showString("H")
 })
