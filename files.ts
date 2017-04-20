@@ -81,16 +81,24 @@ namespace files {
          * subsequent read/write calls.
          */
         //% blockId=fs_file_seek block="%this|seek offset %offset|from %flags" advanced=true
-        public seek(offset: number, flags: FileSystemSeekFlags): number {
-            return files.fsSeek(this.fd, offset, flags);
+        public seek(offset: number, flags: FileSystemSeekFlags): void {
+            files.fsSeek(this.fd, offset, flags);
+        }
+
+        /**
+         * Write a string to the file.
+         */
+        //% blockId=fs_file_write_string block="%this|write string %buffer" advanced=true
+        public writeString(text: string): void {
+            files.fsWriteString(this.fd, text);
         }
 
         /**
          * Write data to the file.
          */
-        //% blockId=fs_file_write_ buffer block="%this|write buffer %buffer" advanced=true
-        public writeBuffer(buffer: Buffer): number {
-            return files.fsWrite(this.fd, buffer);
+        //% blockId=fs_file_write_buffer block="%this|write buffer %buffer" advanced=true
+        public writeBuffer(buffer: Buffer): void {
+            files.fsWriteBuffer(this.fd, buffer);
         }
     }
 }

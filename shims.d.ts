@@ -69,38 +69,44 @@ declare namespace files {
     /**
      *
      */
-    //% weight=0 shim=files::fsOpen
+    //% weight=0 advanced=true shim=files::fsOpen
     function fsOpen(path: string): number;
 
     /**
      *
      */
-    //% weight=0 shim=files::fsFlush
+    //% weight=0 advanced=true shim=files::fsFlush
     function fsFlush(fd: number): number;
 
     /**
      *
      */
-    //% weight=0 shim=files::fsClose
+    //% weight=0 advanced=true shim=files::fsClose
     function fsClose(fd: number): number;
 
     /**
      *
      */
-    //% weight=0 shim=files::fsRemove
+    //% weight=0 advanced=true shim=files::fsRemove
     function fsRemove(name: string): number;
 
     /**
      *
      */
-    //% weight=0 shim=files::fsSeek
+    //% weight=0 advanced=true shim=files::fsSeek
     function fsSeek(fd: number, offset: number, flags: number): number;
 
     /**
      *
      */
-    //% weight=0 shim=files::fsWrite
-    function fsWrite(fd: number, buffer: Buffer): number;
+    //% weight=0 advanced=true shim=files::fsWriteString
+    function fsWriteString(fd: number, text: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsWriteBuffer
+    function fsWriteBuffer(fd: number, buffer: Buffer): number;
 }
 
 // Auto-generated. Do not edit. Really.

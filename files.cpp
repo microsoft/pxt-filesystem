@@ -151,7 +151,7 @@ int settingsReadNumber(StringData* name) {
 /**
 *
 */
-//% weight=0
+//% weight=0 advanced=true
 int fsOpen(StringData* path) {
     initFileSystem();
     ManagedString fn(path);
@@ -161,7 +161,7 @@ int fsOpen(StringData* path) {
 /**
 *
 */
-//% weight=0
+//% weight=0 advanced=true
 int fsFlush(int fd) {
     if (fd <= 0) return fd;
 
@@ -172,7 +172,7 @@ int fsFlush(int fd) {
 /**
 *
 */
-//% weight=0
+//% weight=0 advanced=true
 int fsClose(int fd) {
     if (fd <= 0) return fd;
 
@@ -183,7 +183,7 @@ int fsClose(int fd) {
 /**
 *
 */
-//% weight=0
+//% weight=0 advanced=true
 int fsRemove(StringData* name) {
     initFileSystem();
     ManagedString fn(name);
@@ -193,7 +193,7 @@ int fsRemove(StringData* name) {
 /**
 *
 */
-//% weight=0
+//% weight=0 advanced=true
 int fsSeek(int fd, int offset, int flags) {
     if (fd <= 0) return fd;
 
@@ -204,8 +204,20 @@ int fsSeek(int fd, int offset, int flags) {
 /**
 *
 */
-//% weight=0
-int fsWrite(int fd, Buffer buffer) {
+//% weight=0 advanced=true
+int fsWriteString(int fd, StringData* text) {
+    if (fd <= 0) return fd;
+
+    initFileSystem();
+    ManagedString s(text);
+    return MicroBitFileSystem::defaultFileSystem->write(fd, (uint8_t*)s.toCharArray(), s.length());
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsWriteBuffer(int fd, Buffer buffer) {
     if (fd <= 0) return fd;
 
     initFileSystem();
