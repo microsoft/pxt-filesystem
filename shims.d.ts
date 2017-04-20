@@ -49,15 +49,6 @@ declare namespace files {
     //% blockId=files_create_directory block="files create directory %name" shim=files::createDirectory
     function createDirectory(name: string): void;
 
-    /** 
-     * Writes a number settings
-     * @param name name of the setting, must be filename compatible, e.g.: setting
-     * @param value value of the setting
-     */
-    //% blockId=settings_write_number block="settings save number %name|as %value"
-    //% weight=20 shim=files::settingsSaveNumber
-    function settingsSaveNumber(name: string, value: number): void;
-
     /**
      * Reads a number settings, -1 if not found.
      * @param name name of the settings, must be filename compatible, e.g.: setting

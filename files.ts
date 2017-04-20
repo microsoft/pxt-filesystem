@@ -17,12 +17,26 @@ namespace files {
     /**
      * Opens a new file
      * @param filename file name to open, eg: "data.txt"
-     */    
+     */
     //% blockId=fs_open block="open %filename" advanced=true
     export function open(filename: string): File {
         const f = new File(filename);
         f.open();
         return f;
+    }
+
+    /** 
+    * Writes a number settings
+    * @param name name of the setting, must be filename compatible, e.g.: setting
+    * @param value value of the setting
+    */
+    //% blockId=settings_write_number block="settings save number %name|as %value"
+    //% weight=20
+    export function settingsSaveNumber(name: string, value: number) {
+        files.createDirectory("settings");
+        const fn = "settings/" + name;
+        files.remove(fn);
+        files.appendNumber(fn, value);
     }
 
     /**
@@ -62,7 +76,7 @@ namespace files {
          * Closes the file and writes all pending data to FLASH
          */
         //% blockId=fs_file_close block="%this|close" advanced=true
-        public close(): void {            
+        public close(): void {
             files.fsClose(this.fd);
             this.fd = -1;
         }

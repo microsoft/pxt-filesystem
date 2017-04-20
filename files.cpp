@@ -44,9 +44,10 @@ void appendLine(StringData *filename, StringData *text)
 {
     initFileSystem();
     ManagedString fn(filename);
+    ManagedString t(text);
+
     MicroBitFile f(fn);
-    if (text)
-        f.append(text);
+    f.append(t);
     f.append("\r\n");
     f.close();
 }
@@ -60,12 +61,11 @@ void appendLine(StringData *filename, StringData *text)
 //% blockExternalInputs=1 weight=86 blockGap=8
 void appendString(StringData *filename, StringData *text)
 {
-    if (!text)
-        return;
     initFileSystem();
     ManagedString fn(filename);
+    ManagedString t(text);
     MicroBitFile f(fn);
-    f.append(text);
+    f.append(t);
     f.close();
 }
 
@@ -110,21 +110,6 @@ void createDirectory(StringData* name) {
     initFileSystem();
     ManagedString fn(name);
     MicroBitFileSystem::defaultFileSystem->createDirectory(fn.toCharArray());
-}
-
-/** 
-* Writes a number settings
-* @param name name of the setting, must be filename compatible, e.g.: setting
-* @param value value of the setting
-*/
-//% blockId=settings_write_number block="settings save number %name|as %value"
-//% weight=20
-void settingsSaveNumber(StringData* name, int value) {
-    initFileSystem();
-    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
-    MicroBitFile f("settings/" + ManagedString(name), MB_WRITE | MB_CREAT);
-    f.write(ManagedString(value));
-    f.close();
 }
 
 /**

@@ -1,14 +1,3 @@
-let r = Math.random(1000);
-serial.writeLine("" + r)
-files.settingsSaveNumber("val.txt", r)
-
-let rr = files.settingsReadNumber("val.txt");
-serial.writeLine("" + rr)
-
-input.onButtonPressed(Button.A, () => {
-    serial.writeLine("hello")
-});
-
 const file = "data.csv";
 input.onButtonPressed(Button.A, () => {
     files.remove(file)
@@ -41,3 +30,15 @@ control.assert(test == sertest);
 let f = files.open("oo.txt");
 f.seek(0, FileSystemSeekFlags.End);
 f.flush();
+
+input.onButtonPressed(Button.A, () => {
+    files.appendLine(
+        "output.txt",
+        "hello"
+    )
+})
+input.onButtonPressed(Button.B, () => {
+    basic.showString("H")
+    files.readToSerial("output.txt")
+    serial.writeString("Hi")
+})
