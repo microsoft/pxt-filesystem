@@ -53,7 +53,7 @@ files.settingsSaveNumber("calibrated", 1)
 * read setting value
 
 ```blocks
-var calibrated = files.settingsReadNumber("calibrated");
+let calibrated = files.settingsReadNumber("calibrated");
 ```
 
 

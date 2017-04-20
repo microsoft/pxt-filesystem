@@ -31,7 +31,9 @@ namespace files
 //% blockExternalInputs=1 weight=90 blockGap=8
 void appendLine(StringData *filename, StringData *text)
 {
-    MicroBitFile f(filename);
+    initFileSystem();
+    ManagedString fn(filename);
+    MicroBitFile f(fn);
     if (text)
         f.append(text);
     f.append("\r\n");
@@ -49,7 +51,9 @@ void appendString(StringData *filename, StringData *text)
 {
     if (!text)
         return;
-    MicroBitFile f(filename);
+    initFileSystem();
+    ManagedString fn(filename);
+    MicroBitFile f(fn);
     f.append(text);
     f.close();
 }
@@ -61,7 +65,9 @@ void appendString(StringData *filename, StringData *text)
 //% blockId="fs_write_to_serial" block="file %filename|read to serial"
 //% weight=80
 void readToSerial(StringData* filename) {
-    MicroBitFile f(filename, MB_READ);
+    initFileSystem();
+    ManagedString fn(filename);
+    MicroBitFile f(fn);
     char buf[32];
     int read = 0;
     while((read = f.read(buf, 32 * sizeof(char))) > 0) {
@@ -78,8 +84,9 @@ void readToSerial(StringData* filename) {
 //% weight=50 advanced=true
 void remove(StringData *filename)
 {
-    MicroBitFile f(filename);
-    f.remove();
+    initFileSystem();
+    ManagedString fn(filename);
+    MicroBitFileSystem::defaultFileSystem->remove(fn.toCharArray());
 }
 
 /**
@@ -89,7 +96,9 @@ void remove(StringData *filename)
 //% advanced=true weight=10
 //% blockId=files_create_directory block="files create directory %name"
 void createDirectory(StringData* name) {
-    MicroBitFileSystem::defaultFileSystem->createDirectory(ManagedString(name).toCharArray());
+    initFileSystem();
+    ManagedString fn(name);
+    MicroBitFileSystem::defaultFileSystem->createDirectory(fn.toCharArray());
 }
 
 /** 
