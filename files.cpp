@@ -38,9 +38,9 @@ void appendLine(StringData *filename, StringData *text)
 {
     initFileSystem();
     ManagedString fn(filename);
+    ManagedString t(text);
     MicroBitFile f(fn);
-    if (text)
-        f.append(text);
+    f.append(t);
     f.append("\r\n");
     f.close();
 }
@@ -59,8 +59,9 @@ void appendString(StringData *filename, StringData *text)
 
     initFileSystem();
     ManagedString fn(filename);
+    ManagedString t(text);
     MicroBitFile f(fn);
-    f.append(text);
+    f.append(t);
     f.close();
 }
 
