@@ -1,19 +1,21 @@
-/*
-const file = "data.csv";
+let fi = 0;
+let file = "";
 input.onButtonPressed(Button.B, () => {
+    file = "data" + (fi++) + ".csv";
+    serial.writeLine(file);
     files.remove(file)
     files.readToSerial(file);
     serial.writeLine("");
     basic.showString("o")
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < 200; ++i) {
         let t = input.runningTime();
         let ay = input.acceleration(Dimension.Y);
-        files.appendNumber(file, t);
-        files.appendString(file, "\t");
-        files.appendNumber(file, ay);
+        files.appendNumber(file, i);
+        files.appendString(file, " ");
+        files.appendNumber(file, i * i);
         files.appendLine(file, "");
-        serial.writeString(".")
-        basic.pause(20)
+        serial.writeLine(".")
+        basic.pause(10)
     }
     serial.writeLine("");
     files.readToSerial(file);
@@ -26,6 +28,7 @@ let sertest = files.settingsReadNumber("test");
 serial.writeValue("sertest", sertest);
 control.assert(test == sertest);
 
+/*
 const fn = "out2.txt";
 input.onButtonPressed(Button.A, () => {
     basic.showString("o")
@@ -33,8 +36,6 @@ input.onButtonPressed(Button.A, () => {
     serial.writeString("[")
     files.readToSerial(fn)
 })
-*/
-
 const f = "output.txt";
 input.onButtonPressed(Button.A, () => {
     files.appendLine(f, "hello")
@@ -46,3 +47,4 @@ input.onButtonPressed(Button.B, () => {
     serial.writeString("Hi")
     basic.showString("H")
 })
+*/
