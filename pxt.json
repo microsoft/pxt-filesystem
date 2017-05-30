@@ -1,6 +1,6 @@
 {
     "name": "filesystem",
-    "version": "0.5.2",
+    "version": "0.8.0",
     "description": "File system",
     "files": [
         "README.md",
@@ -13,7 +13,7 @@
         "tests.ts"
     ],
     "public": true,
-    "targetVersion": "0.6.4",
+    "targetVersion": "0.11.9",
     "dependencies": {
         "core": "*"
     },

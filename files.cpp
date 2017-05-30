@@ -21,18 +21,19 @@ enum FileSystemSeekFlags {
 */
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files
+{    
+// Initializes file system. Must be called before any FS operation.
+// built-in size computation for file system
+// does not take into account size changes
+// for compiled code
+void initFileSystem()
 {
-// Initializes file system. Must be called before any FS operation.		
-// built-in size computation for file system		
-// does not take into account size changes		
-// for compiled code		
-void initFileSystem()		
-{		
-    if (MicroBitFileSystem::defaultFileSystem == NULL)		
-    {		
-        new MicroBitFileSystem(pxt::afterProgramPage());		
-    }		
-}    
+    if (MicroBitFileSystem::defaultFileSystem == NULL)
+    {
+        new MicroBitFileSystem(pxt::afterProgramPage());
+    }
+}
+
 /**
     * Appends text and a new line to a file
     * @param filename file name, eg: "output.txt"
@@ -45,7 +46,6 @@ void appendLine(StringData *filename, StringData *text)
     initFileSystem();
     ManagedString fn(filename);
     ManagedString t(text);
-
     MicroBitFile f(fn);
     f.append(t);
     f.append("\r\n");
@@ -81,8 +81,8 @@ void readToSerial(StringData* filename) {
     MicroBitFile f(fn);
     char buf[32];
     int read = 0;
-    while((read = f.read(buf, 32 * sizeof(char))) > 0) {
-         uBit.serial.send((uint8_t*)buf, read * sizeof(char));
+    while((read = f.read(buf, sizeof(buf) * sizeof(char))) > 0) {
+         uBit.serial.send((uint8_t*)buf, read * sizeof(char), SYNC_SPINWAIT);
     }   
     f.close();    
 }
@@ -127,7 +127,7 @@ int settingsReadNumber(StringData* name) {
     ManagedString v;
     ManagedString buff;
     do {
-        ManagedString buff = f.read(32);        
+        buff = f.read(32);        
         v = v + buff;
     } while(buff.length() > 0);
     return atoi(v.toCharArray());

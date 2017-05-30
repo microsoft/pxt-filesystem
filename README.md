@@ -2,6 +2,12 @@
 
 To use this package, go to https://pxt.microbit.org, click ``Add package`` and search for **filesystem**.
 
+### ~ hint
+
+BETA - This package is still under development and subject to changes.
+
+### ~
+
 ## Usage
 
 The package allows to read and write files to the @boardname@ flash.
