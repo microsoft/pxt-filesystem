@@ -81,7 +81,11 @@ let f = files.open("data.txt");
 f.writeString("yay");
 ```
 
-* read - TODO
+* read data
+```typescript
+let f = files.open("data.txt");
+let buf = f.readBuffer(64);
+```
 
 ## Example: Writing accelerometer data
 

@@ -212,4 +212,21 @@ int fsWriteBuffer(int fd, Buffer buffer) {
     return MicroBitFileSystem::defaultFileSystem->write(fd, pBuf->payload, pBuf->length);
 }
 
+/**
+*/
+//% weight=0 advanced=true
+Buffer fsReadBuffer(int fd, int length) {
+    if (fd < 0 || length < 0) 
+        return ManagedBuffer(0).leakData();
+
+    initFileSystem();
+    ManagedBuffer buf(length);
+
+    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, buf.getBytes(), buf.length());
+
+    if (ret < 0) return ManagedBuffer(0).leakData();
+    else if (ret != length) return buf.slice(0, ret).leakData();
+    else return buf.leakData();
+}
+
 }

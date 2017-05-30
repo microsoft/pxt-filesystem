@@ -114,5 +114,14 @@ namespace files {
         public writeBuffer(buffer: Buffer): void {
             files.fsWriteBuffer(this.fd, buffer);
         }
+
+        /**
+         * Reads the next character in the file at the current position
+         * @param length maximum number of bytes to read, eg: 64
+         */
+        //% blockId=fs_file_read block="%this|read buffer (bytes) %length" advanced=true
+        public readBuffer(length: number): Buffer {
+            return files.fsReadBuffer(this.fd, length);
+        }
     }
 }
