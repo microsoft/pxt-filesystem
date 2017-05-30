@@ -148,7 +148,7 @@ int fsOpen(StringData* path) {
 */
 //% weight=0 advanced=true
 int fsFlush(int fd) {
-    if (fd <= 0) return fd;
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
     return MicroBitFileSystem::defaultFileSystem->flush(fd);
@@ -159,7 +159,7 @@ int fsFlush(int fd) {
 */
 //% weight=0 advanced=true
 int fsClose(int fd) {
-    if (fd <= 0) return fd;
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
     return MicroBitFileSystem::defaultFileSystem->close(fd);
@@ -180,7 +180,8 @@ int fsRemove(StringData* name) {
 */
 //% weight=0 advanced=true
 int fsSeek(int fd, int offset, int flags) {
-    if (fd <= 0) return fd;
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+    if (offset < 0) return MICROBIT_INVALID_PARAMETER;
 
     initFileSystem();
     return MicroBitFileSystem::defaultFileSystem->seek(fd, offset, flags);
@@ -191,7 +192,7 @@ int fsSeek(int fd, int offset, int flags) {
 */
 //% weight=0 advanced=true
 int fsWriteString(int fd, StringData* text) {
-    if (fd <= 0) return fd;
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
     ManagedString s(text);
@@ -203,7 +204,7 @@ int fsWriteString(int fd, StringData* text) {
 */
 //% weight=0 advanced=true
 int fsWriteBuffer(int fd, Buffer buffer) {
-    if (fd <= 0) return fd;
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
     ManagedBuffer buf(buffer);

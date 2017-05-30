@@ -25,7 +25,7 @@ namespace files {
         return f;
     }
 
-    /** 
+    /**
     * Writes a number settings
     * @param name name of the setting, must be filename compatible, e.g.: setting
     * @param value value of the setting
@@ -102,7 +102,7 @@ namespace files {
         /**
          * Write a string to the file.
          */
-        //% blockId=fs_file_write_string block="%this|write string %buffer" advanced=true
+        //% blockId=fs_file_write_string block="%this|write string %text" advanced=true
         public writeString(text: string): void {
             files.fsWriteString(this.fd, text);
         }

@@ -24,13 +24,15 @@ input.onButtonPressed(Button.B, () => {
 let test = Math.random(1000);
 files.settingsSaveNumber("test", test);
 serial.writeValue("test", test);
-let sertest = files.settingsReadNumber("test");
-serial.writeValue("sertest", sertest);
-control.assert(test == sertest);
+let serTest = files.settingsReadNumber("test");
+serial.writeValue("serTest", serTest);
+control.assert(test == serTest);
 
-let f = files.open("oo.txt");
+let f = files.open("output.txt");
+f.writeString("writeString\r\n");
 f.seek(0, FileSystemSeekFlags.End);
 f.flush();
+f.close();
 
 input.onButtonPressed(Button.A, () => {
     files.appendLine(
@@ -51,14 +53,14 @@ input.onButtonPressed(Button.A, () => {
     serial.writeString("[")
     files.readToSerial(fn)
 })
-const f = "output.txt";
+const fo = "output.txt";
 input.onButtonPressed(Button.A, () => {
-    files.appendLine(f, "hello")
+    files.appendLine(fo, "hello")
     serial.writeString("W")
     basic.showString("W")
 })
 input.onButtonPressed(Button.B, () => {
-    files.readToSerial(f)
+    files.readToSerial(fo)
     serial.writeString("Hi")
     basic.showString("H")
 })
