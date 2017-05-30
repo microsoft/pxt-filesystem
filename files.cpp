@@ -5,6 +5,18 @@
 using namespace pxt;
 
 /**
+* File seek offset modifier
+*/
+enum FileSystemSeekFlags {
+    //% block=set
+    Set = MB_SEEK_SET,
+    //% block=current
+    Current = MB_SEEK_CUR,
+    //% block=end
+    End = MB_SEEK_END
+};
+
+/**
 * File system operations
 */
 //% weight=5 color=#002050 icon="\uf0a0"
@@ -100,21 +112,6 @@ void createDirectory(StringData* name) {
     MicroBitFileSystem::defaultFileSystem->createDirectory(fn.toCharArray());
 }
 
-/** 
-* Writes a number settings
-* @param name name of the setting, must be filename compatible, e.g.: setting
-* @param value value of the setting
-*/
-//% blockId=settings_write_number block="settings save number %name|as %value"
-//% weight=20
-void settingsSaveNumber(StringData* name, int value) {
-    initFileSystem();
-    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
-    MicroBitFile f("settings/" + ManagedString(name));
-    f.write(value);
-    f.close();
-}
-
 /**
 * Reads a number settings, -1 if not found.
 * @param name name of the settings, must be filename compatible, e.g.: setting
@@ -123,7 +120,8 @@ void settingsSaveNumber(StringData* name, int value) {
 //% weight=19
 int settingsReadNumber(StringData* name) {
     initFileSystem();
-    MicroBitFile f("settings/" + ManagedString(name));
+    MicroBitFileSystem::defaultFileSystem->createDirectory("settings");
+    MicroBitFile f("settings/" + ManagedString(name), MB_READ);
     if (!f.isValid()) 
         return -1;
     ManagedString v;
@@ -133,6 +131,85 @@ int settingsReadNumber(StringData* name) {
         v = v + buff;
     } while(buff.length() > 0);
     return atoi(v.toCharArray());
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsOpen(StringData* path) {
+    initFileSystem();
+    ManagedString fn(path);
+    return MicroBitFileSystem::defaultFileSystem->open(fn.toCharArray(), MB_READ|MB_WRITE|MB_CREAT);
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsFlush(int fd) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->flush(fd);
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsClose(int fd) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->close(fd);
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsRemove(StringData* name) {
+    initFileSystem();
+    ManagedString fn(name);
+    return MicroBitFileSystem::defaultFileSystem->remove(fn.toCharArray());
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsSeek(int fd, int offset, int flags) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+    if (offset < 0) return MICROBIT_INVALID_PARAMETER;
+
+    initFileSystem();
+    return MicroBitFileSystem::defaultFileSystem->seek(fd, offset, flags);
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsWriteString(int fd, StringData* text) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+
+    initFileSystem();
+    ManagedString s(text);
+    return MicroBitFileSystem::defaultFileSystem->write(fd, (uint8_t*)s.toCharArray(), s.length());
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsWriteBuffer(int fd, Buffer buffer) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+
+    initFileSystem();
+    ManagedBuffer buf(buffer);
+    auto pBuf = buf.leakData();
+    return MicroBitFileSystem::defaultFileSystem->write(fd, pBuf->payload, pBuf->length);
 }
 
 }

@@ -49,15 +49,6 @@ declare namespace files {
     //% blockId=files_create_directory block="files create directory %name" shim=files::createDirectory
     function createDirectory(name: string): void;
 
-    /** 
-     * Writes a number settings
-     * @param name name of the setting, must be filename compatible, e.g.: setting
-     * @param value value of the setting
-     */
-    //% blockId=settings_write_number block="settings save number %name|as %value"
-    //% weight=20 shim=files::settingsSaveNumber
-    function settingsSaveNumber(name: string, value: number): void;
-
     /**
      * Reads a number settings, -1 if not found.
      * @param name name of the settings, must be filename compatible, e.g.: setting
@@ -65,6 +56,48 @@ declare namespace files {
     //% blockId=settings_read_number block="settings read number %name"
     //% weight=19 shim=files::settingsReadNumber
     function settingsReadNumber(name: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsOpen
+    function fsOpen(path: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsFlush
+    function fsFlush(fd: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsClose
+    function fsClose(fd: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsRemove
+    function fsRemove(name: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsSeek
+    function fsSeek(fd: number, offset: number, flags: number): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsWriteString
+    function fsWriteString(fd: number, text: string): number;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsWriteBuffer
+    function fsWriteBuffer(fd: number, buffer: Buffer): number;
 }
 
 // Auto-generated. Do not edit. Really.
