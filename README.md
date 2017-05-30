@@ -62,6 +62,26 @@ files.settingsSaveNumber("calibrated", 1)
 let calibrated = files.settingsReadNumber("calibrated");
 ```
 
+### File class
+
+The ``File`` class allows to keep a file instance open, manipulate the pointer position and read from the file.
+
+
+* open, flush or close the file
+
+```typescript
+let f = files.open("data.txt");
+f.flush();
+f.close();
+```
+
+* write strings or buffers
+```typescript
+let f = files.open("data.txt");
+f.writeString("yay");
+```
+
+* read - TODO
 
 ## Example: Writing accelerometer data
 
