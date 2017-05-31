@@ -100,6 +100,23 @@ namespace files {
         }
 
         /**
+         * Gets the current position in the file
+         */
+        //% blockId=fs_file_position block="%this|position" advanced=true
+        public position(): number {
+            return files.fsSeek(this.fd, 0, FileSystemSeekFlags.Current);
+        }
+
+        /**
+         * Seeks to a position in this file instance from the beginning of the file.
+         * @param position the offset from the start of the file
+         */
+        //% blockId=fs_file_set_position block="%this|set position %position"
+        public setPosition(position: number): void {
+            files.fsSeek(this.fd, position, FileSystemSeekFlags.Set);
+        }
+
+        /**
          * Write a string to the file.
          */
         //% blockId=fs_file_write_string block="%this|write string %text" advanced=true
