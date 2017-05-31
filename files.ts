@@ -32,7 +32,7 @@ namespace files {
     * @param value value of the setting
     */
     //% blockId=settings_write_number block="settings save number %name|as %value"
-    //% weight=20
+    //% weight=20 blockGap=8
     export function settingsSaveNumber(name: string, value: number) {
         files.createDirectory("settings");
         const fn = "settings/" + name;
@@ -118,7 +118,7 @@ namespace files {
          * Seeks to a position in this file instance from the beginning of the file.
          * @param position the offset from the start of the file
          */
-        //% blockGap=8
+        //% blockGap=8 advanced=true
         //% blockId=fs_file_set_position block="%this|set position %position"
         public setPosition(position: number): void {
             files.fsSeek(this.fd, position, FileSystemSeekFlags.Set);
