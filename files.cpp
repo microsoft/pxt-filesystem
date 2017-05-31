@@ -92,7 +92,7 @@ void readToSerial(StringData* filename) {
     * @param filename name of the file to remove, eg: "output.txt"
     */
 //% blockId="fs_remove" block="file remove %filename"
-//% weight=50 advanced=true
+//% weight=80 advanced=true
 void remove(StringData *filename)
 {
     initFileSystem();

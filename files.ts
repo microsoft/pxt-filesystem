@@ -18,6 +18,7 @@ namespace files {
      * Opens a new file
      * @param filename file name to open, eg: "data.txt"
      */
+    //% blockGap=8
     //% blockId=fs_open block="open %filename" advanced=true
     export function open(filename: string): File {
         const f = new File(filename);
@@ -58,6 +59,7 @@ namespace files {
         /**
          * Opens the file
          */
+        //% blockGap=8
         //% blockId=fs_file_open block="%this|open" advanced=true
         public open(): void {
             if (this.fd < 0)
@@ -67,6 +69,7 @@ namespace files {
         /**
          * Flushes all pending write operations to FLASH
          */
+        //% blockGap=8
         //% blockId=fs_file_flush block="%this|close" advanced=true
         public flush(): void {
             files.fsFlush(this.fd);
@@ -75,6 +78,7 @@ namespace files {
         /**
          * Closes the file and writes all pending data to FLASH
          */
+        //% blockGap=8
         //% blockId=fs_file_close block="%this|close" advanced=true
         public close(): void {
             files.fsClose(this.fd);
@@ -84,6 +88,7 @@ namespace files {
         /**
          * Removes the file
          */
+        //% blockGap=8
         //% blockId=fs_file_remove block="%this|remove" advanced=true
         public remove(): void {
             files.fsRemove(this.path);
@@ -94,6 +99,7 @@ namespace files {
          * Move the current position of a file handle, to be used for
          * subsequent read/write calls.
          */
+        //% blockGap=8
         //% blockId=fs_file_seek block="%this|seek offset %offset|from %flags" advanced=true
         public seek(offset: number, flags: FileSystemSeekFlags): void {
             files.fsSeek(this.fd, offset, flags);
@@ -102,6 +108,7 @@ namespace files {
         /**
          * Gets the current position in the file
          */
+        //% blockGap=8
         //% blockId=fs_file_position block="%this|position" advanced=true
         public position(): number {
             return files.fsSeek(this.fd, 0, FileSystemSeekFlags.Current);
@@ -111,6 +118,7 @@ namespace files {
          * Seeks to a position in this file instance from the beginning of the file.
          * @param position the offset from the start of the file
          */
+        //% blockGap=8
         //% blockId=fs_file_set_position block="%this|set position %position"
         public setPosition(position: number): void {
             files.fsSeek(this.fd, position, FileSystemSeekFlags.Set);
@@ -119,6 +127,7 @@ namespace files {
         /**
          * Write a string to the file.
          */
+        //% blockGap=8
         //% blockId=fs_file_write_string block="%this|write string %text" advanced=true
         public writeString(text: string): void {
             files.fsWriteString(this.fd, text);
@@ -127,6 +136,7 @@ namespace files {
         /**
          * Write data to the file.
          */
+        //% blockGap=8
         //% blockId=fs_file_write_buffer block="%this|write buffer %buffer" advanced=true
         public writeBuffer(buffer: Buffer): void {
             files.fsWriteBuffer(this.fd, buffer);
@@ -136,6 +146,7 @@ namespace files {
          * Reads the file at the current position and fills a buffer
          * @param length maximum number of bytes to read, eg: 64
          */
+        //% blockGap=8
         //% blockId=fs_file_read_buffer block="%this|read buffer (bytes) %length" advanced=true
         public readBuffer(length: number): Buffer {
             return files.fsReadBuffer(this.fd, length);
@@ -144,6 +155,7 @@ namespace files {
         /**
          * Reads the next character in the file at the current position
          */
+        //% blockGap=8
         //% blockId=fs_file_read block="%this|read" advanced=true
         public read(): number {
             return files.fsRead(this.fd);
