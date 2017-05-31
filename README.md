@@ -69,20 +69,20 @@ The ``File`` class allows to keep a file instance open, manipulate the pointer p
 
 * open, flush or close the file
 
-```typescript
+```blocks
 let f = files.open("data.txt");
 f.flush();
 f.close();
 ```
 
 * write strings or buffers
-```typescript
+```blocks
 let f = files.open("data.txt");
 f.writeString("yay");
 ```
 
 * read data
-```typescript
+```blocks
 let f = files.open("data.txt");
 let buf = f.readBuffer(64);
 let c = f.read();
@@ -90,7 +90,7 @@ let c = f.read();
 
 * set the cursor position
 
-```typescript
+```blocks
 let f = files.open("data.txt");
 f.setPosition(42);
 let pos = f.position();
@@ -111,11 +111,7 @@ input.onButtonPressed(Button.A, () => {
     for (let i = 0; i < 100; ++i) {
         let t = input.runningTime();
         let ay = input.acceleration(Dimension.Y);
-        files.appendNumber(file, t);
-        files.appendString(file, "\t");
-        files.appendNumber(file, ay);
-        files.appendLine(file, "");
-
+        files.appendLine(file, t + "\t" + ay);
         control.waitMicros(20);
     }
 });
