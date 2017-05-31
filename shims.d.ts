@@ -38,7 +38,7 @@ declare namespace files {
      * @param filename name of the file to remove, eg: "output.txt"
      */
     //% blockId="fs_remove" block="file remove %filename"
-    //% weight=50 advanced=true shim=files::remove
+    //% weight=80 advanced=true blockGap=8 shim=files::remove
     function remove(filename: string): void;
 
     /**
