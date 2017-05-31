@@ -85,6 +85,15 @@ f.writeString("yay");
 ```typescript
 let f = files.open("data.txt");
 let buf = f.readBuffer(64);
+let c = f.read();
+```
+
+* set the cursor position
+
+```typescript
+let f = files.open("data.txt");
+f.setPosition(42);
+let pos = f.position();
 ```
 
 ## Example: Writing accelerometer data
