@@ -217,16 +217,30 @@ int fsWriteBuffer(int fd, Buffer buffer) {
 //% weight=0 advanced=true
 Buffer fsReadBuffer(int fd, int length) {
     if (fd < 0 || length < 0) 
-        return ManagedBuffer(0).leakData();
+        return ManagedBuffer().leakData();
 
     initFileSystem();
     ManagedBuffer buf(length);
 
     int ret = MicroBitFileSystem::defaultFileSystem->read(fd, buf.getBytes(), buf.length());
 
-    if (ret < 0) return ManagedBuffer(0).leakData();
+    if (ret < 0) return ManagedBuffer().leakData();
     else if (ret != length) return buf.slice(0, ret).leakData();
     else return buf.leakData();
+}
+
+/**
+*
+*/
+//% weight=0 advanced=true
+int fsRead(int fd) {
+    if (fd < 0) return MICROBIT_NOT_SUPPORTED;
+    initFileSystem();
+
+    char c[1];    
+    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, (uint8_t*)&c, 1);
+    if (ret != 1) return ret;
+    else return c[0];
 }
 
 }

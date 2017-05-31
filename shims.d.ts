@@ -103,6 +103,12 @@ declare namespace files {
      */
     //% weight=0 advanced=true shim=files::fsReadBuffer
     function fsReadBuffer(fd: number, length: number): Buffer;
+
+    /**
+     *
+     */
+    //% weight=0 advanced=true shim=files::fsRead
+    function fsRead(fd: number): number;
 }
 
 // Auto-generated. Do not edit. Really.

@@ -116,12 +116,20 @@ namespace files {
         }
 
         /**
-         * Reads the next character in the file at the current position
+         * Reads the file at the current position and fills a buffer
          * @param length maximum number of bytes to read, eg: 64
          */
-        //% blockId=fs_file_read block="%this|read buffer (bytes) %length" advanced=true
+        //% blockId=fs_file_read_buffer block="%this|read buffer (bytes) %length" advanced=true
         public readBuffer(length: number): Buffer {
             return files.fsReadBuffer(this.fd, length);
+        }
+
+        /**
+         * Reads the next character in the file at the current position
+         */
+        //% blockId=fs_file_read block="%this|read" advanced=true
+        public read(): number {
+            return files.fsRead(this.fd);
         }
     }
 }
