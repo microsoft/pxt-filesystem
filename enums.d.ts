@@ -5,7 +5,7 @@
      * File seek offset modifier
      */
 
-    declare enum FileSystemSeekFlags {
+    declare const enum FileSystemSeekFlags {
     //% block=set
     Set = 0x01,  // MB_SEEK_SET
     //% block=current
