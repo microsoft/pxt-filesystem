@@ -1,6 +1,6 @@
-# File system driver
+# File system driver [![Build Status](https://travis-ci.org/Microsoft/pxt-filesystem.svg?branch=master)](https://travis-ci.org/Microsoft/pxt-filesystem)
 
-To use this package, go to https://pxt.microbit.org, click ``Add package`` and search for **filesystem**.
+To use this package, go to https://makecode.microbit.org, click ``Add package`` and search for **filesystem**.
 
 ### ~ hint
 
@@ -124,6 +124,7 @@ input.onButtonPressed(Button.B, () => {
 ## Supported targets
 
 * for PXT/microbit
+* for PXT/calliope
 
 ## License
 
