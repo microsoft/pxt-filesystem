@@ -207,9 +207,7 @@ int fsWriteBuffer(int fd, Buffer buffer) {
     if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
-    ManagedBuffer buf(buffer);
-    auto pBuf = buf.leakData();
-    return MicroBitFileSystem::defaultFileSystem->write(fd, pBuf->payload, pBuf->length);
+    return MicroBitFileSystem::defaultFileSystem->write(fd, buffer->payload, buffer->length);
 }
 
 /**
