@@ -4,6 +4,11 @@
 
 using namespace pxt;
 
+// v0 backward compat support
+#ifndef PXT_BUFFER_DATA
+#define PXT_BUFFER_DATA(buffer) buffer->payload
+#endif
+
 /**
 * File seek offset modifier
 */
@@ -207,9 +212,7 @@ int fsWriteBuffer(int fd, Buffer buffer) {
     if (fd < 0) return MICROBIT_NOT_SUPPORTED;
 
     initFileSystem();
-    ManagedBuffer buf(buffer);
-    auto pBuf = buf.leakData();
-    return MicroBitFileSystem::defaultFileSystem->write(fd, pBuf->payload, pBuf->length);
+    return MicroBitFileSystem::defaultFileSystem->write(fd, PXT_BUFFER_DATA(buffer), buffer->length);
 }
 
 /**
