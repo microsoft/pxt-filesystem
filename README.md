@@ -123,8 +123,8 @@ input.onButtonPressed(Button.B, () => {
 
 ## Supported targets
 
-* for PXT/microbit
-* for PXT/calliope
+* for PXT/ microbit
+* for PXT/ calliope
 
 ## License
 
