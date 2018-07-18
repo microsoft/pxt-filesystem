@@ -70,7 +70,7 @@ namespace files {
          * Flushes all pending write operations to FLASH
          */
         //% blockGap=8
-        //% blockId=fs_file_flush block="%this|close" advanced=true
+        //% blockId=fs_file_flush block="%this|flush" advanced=true
         public flush(): void {
             files.fsFlush(this.fd);
         }
