@@ -40,41 +40,6 @@ void initFileSystem()
 }
 
 /**
-    * Appends text and a new line to a file
-    * @param filename file name, eg: "output.txt"
-    * @param text the string to append to the end of the file
-    */
-//% blockId="files_append_line" block="file %filename|append line %text"
-//% blockExternalInputs=1 weight=90 blockGap=8
-void appendLine(StringData *filename, StringData *text)
-{
-    initFileSystem();
-    ManagedString fn(filename);
-    ManagedString t(text);
-    MicroBitFile f(fn);
-    f.append(t);
-    f.append("\r\n");
-    f.close();
-}
-
-/**
-    * Appends text to a file
-    * @param filename file name, eg: "output.txt"
-    * @param text the string to append to the end of the file
-    */
-//% blockId="fs_append_string" block="file %filename|append string %text"
-//% blockExternalInputs=1 weight=86 blockGap=8
-void appendString(StringData *filename, StringData *text)
-{
-    initFileSystem();
-    ManagedString fn(filename);
-    ManagedString t(text);
-    MicroBitFile f(fn);
-    f.append(t);
-    f.close();
-}
-
-/**
 * Reads the content of the file to send it to serial
 * @param filename file name, eg: "output.txt"
 */
