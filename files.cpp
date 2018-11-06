@@ -220,16 +220,20 @@ int fsWriteBuffer(int fd, Buffer buffer) {
 //% weight=0 advanced=true
 Buffer fsReadBuffer(int fd, int length) {
     if (fd < 0 || length < 0) 
-        return ManagedBuffer().leakData();
+        return mkBuffer(NULL, 0);
 
     initFileSystem();
-    ManagedBuffer buf(length);
+    Buffer buf = mkBuffer(NULL, length);
 
-    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, buf.getBytes(), buf.length());
+    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, PXT_BUFFER_DATA(buf), buf->length);
 
-    if (ret < 0) return ManagedBuffer().leakData();
-    else if (ret != length) return buf.slice(0, ret).leakData();
-    else return buf.leakData();
+    if (ret < 0) return mkBuffer(NULL, 0);
+    else if (ret != length) {
+        auto sbuf = mkBuffer(PXT_BUFFER_DATA(buf), ret);
+        decrRC(buf);
+        return sbuf;
+    }
+    else return buf;
 }
 
 /**

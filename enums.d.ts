@@ -7,11 +7,11 @@
 
     declare const enum FileSystemSeekFlags {
     //% block=set
-    Set = 0x01,  // MB_SEEK_SET
+    Set = 1,  // MB_SEEK_SET
     //% block=current
-    Current = 0x04,  // MB_SEEK_CUR
+    Current = 4,  // MB_SEEK_CUR
     //% block=end
-    End = 0x02,  // MB_SEEK_END
+    End = 2,  // MB_SEEK_END
     }
 declare namespace files {
 }

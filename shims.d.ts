@@ -55,60 +55,60 @@ declare namespace files {
      */
     //% blockId=settings_read_number block="settings read number %name"
     //% weight=19 shim=files::settingsReadNumber
-    function settingsReadNumber(name: string): number;
+    function settingsReadNumber(name: string): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsOpen
-    function fsOpen(path: string): number;
+    function fsOpen(path: string): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsFlush
-    function fsFlush(fd: number): number;
+    function fsFlush(fd: int32): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsClose
-    function fsClose(fd: number): number;
+    function fsClose(fd: int32): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsRemove
-    function fsRemove(name: string): number;
+    function fsRemove(name: string): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsSeek
-    function fsSeek(fd: number, offset: number, flags: number): number;
+    function fsSeek(fd: int32, offset: int32, flags: int32): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsWriteString
-    function fsWriteString(fd: number, text: string): number;
+    function fsWriteString(fd: int32, text: string): int32;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsWriteBuffer
-    function fsWriteBuffer(fd: number, buffer: Buffer): number;
+    function fsWriteBuffer(fd: int32, buffer: Buffer): int32;
 
     /**
      */
     //% weight=0 advanced=true shim=files::fsReadBuffer
-    function fsReadBuffer(fd: number, length: number): Buffer;
+    function fsReadBuffer(fd: int32, length: int32): Buffer;
 
     /**
      *
      */
     //% weight=0 advanced=true shim=files::fsRead
-    function fsRead(fd: number): number;
+    function fsRead(fd: int32): int32;
 }
 
 // Auto-generated. Do not edit. Really.
