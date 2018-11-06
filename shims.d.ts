@@ -87,6 +87,11 @@ declare namespace files {
     function fsReadBuffer(fd: int32, length: int32): Buffer;
 
     /**
+     */
+    //% weight=0 advanced=true shim=files::fsReadString
+    function fsReadString(fd: int32, length: int32): string;
+
+    /**
      *
      */
     //% weight=0 advanced=true shim=files::fsRead

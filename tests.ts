@@ -1,5 +1,7 @@
 let fi = 0;
 {   // settings
+    console.log("settings");
+    fi++;
     let test = Math.randomRange(0, 1000);
     files.settingsSaveNumber("test", test);
     serial.writeValue("test", test);
@@ -9,30 +11,59 @@ let fi = 0;
 }
 
 {   // readline
-    fi++;
+    console.log("append")
+    const fn = "test" + (fi++) + ".txt";
     let expected = "";
     const r = Math.random().toString();
-    for (let i = 0; i < 3; ++i) {
-        files.appendLine(fi + ".txt", r);
+    const n = 3;
+    serial.writeValue("expected lines", n);
+    for (let i = 0; i < n; ++i) {
+        files.appendLine(fn, r);
         expected += r + files.NEW_LINE;
     }
-    
-    control.assert()
+
+    { // readString
+        let actual = files.open(fn).readString(-1);
+        serial.writeLine("readstring: " + actual);
+        control.assert(expected == actual);
+    }
+
+    { // readline
+        let actual = "";
+        let line = "";
+        const f = files.open(fn);
+        let i = 0;
+        do {
+            line = f.readLine();
+            actual += line + files.NEW_LINE;
+            i++;
+        } while (line.length)
+        serial.writeValue("actual lines", i);
+        control.assert(n == i);
+        serial.writeLine("readline: " + actual);
+        control.assert(expected == actual);
+    }
 }
 
 {   // file append line
-    let f = files.open("output.txt");
-    f.writeString("writeString\r\n");
+    console.log("file")
+    const fn = "test" + (fi++) + ".txt";
+    let f = files.open(fn);
+    const expected = "writeString\r\n";
+    f.writeString(expected);
     f.seek(0, FileSystemSeekFlags.End);
     f.flush();
-    f.close();    
+    f.close();
+    let actual = files.open(fn).readString(-1);
+    control.assert(expected == actual);
 }
 
 {   // stress
-    let file = "data.csv";
-    serial.writeLine(file);
-    files.remove(file)
-    files.readToSerial(file);
+    console.log("stress")
+    const fn = "test" + (fi++) + ".txt";
+    serial.writeLine(fn);
+    files.remove(fn)
+    files.readToSerial(fn);
     serial.writeLine("");
     basic.showString("o")
     const buf = control.createBuffer(4);
@@ -40,47 +71,16 @@ let fi = 0;
     for (let i = 0; i < 200; ++i) {
         let t = input.runningTime();
         let ay = input.acceleration(Dimension.Y);
-        files.appendNumber(file, i);
-        files.appendString(file, " ");
-        files.appendNumber(file, i * i);
-        files.appendLine(file, "");
-        files.appendBuffer(file, buf);
-        files.appendLine(file, "");
+        files.appendNumber(fn, i);
+        files.appendString(fn, " ");
+        files.appendNumber(fn, i * i);
+        files.appendLine(fn, "");
+        files.appendBuffer(fn, buf);
+        files.appendLine(fn, "");
         serial.writeLine(".")
         basic.pause(10)
     }
     serial.writeLine("");
-    files.readToSerial(file);
+    files.readToSerial(fn);
     basic.showString(":)")
 }
-
-input.onButtonPressed(Button.A, () => {
-    files.appendLine(
-        "output.txt",
-        "hello"
-    )
-})
-input.onButtonPressed(Button.B, () => {
-    basic.showString("H")
-    files.readToSerial("output.txt")
-    serial.writeString("Hi")
-})
-
-const fn = "out2.txt";
-input.onButtonPressed(Button.A, () => {
-    basic.showString("o")
-    files.appendLine(fn, "hello");
-    serial.writeString("[")
-    files.readToSerial(fn)
-})
-const fo = "output.txt";
-input.onButtonPressed(Button.A, () => {
-    files.appendLine(fo, "hello")
-    serial.writeString("W")
-    basic.showString("W")
-})
-input.onButtonPressed(Button.B, () => {
-    files.readToSerial(fo)
-    serial.writeString("Hi")
-    basic.showString("H")
-})

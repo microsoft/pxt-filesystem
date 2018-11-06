@@ -64,16 +64,6 @@ namespace files {
     }
 
     /**
-     * Reads the entire file as a buffer. This will cause out of memory issues (020) for large files.
-     * @param filename 
-     */
-    export function readBuffer(filename: string): Buffer {
-        const file = open(filename);
-        const length = file.length;
-        return file.readBuffer(length);
-    }
-
-    /**
      * Opens a new file
      * @param filename file name to open, eg: "data.txt"
      */
@@ -215,13 +205,32 @@ namespace files {
 
         /**
          * Reads the file at the current position and fills a buffer
-         * @param length maximum number of bytes to read, eg: 64
+         * @param length maximum number of bytes to read, if negative reads the entire file eg: 64
          */
         //% blockGap=8
-        //% blockId=fs_file_read_buffer block="%this|read buffer (bytes) %length" advanced=true
+        //% blockId=fs_file_read_buffer block="%this|read buffer $length (bytes)" advanced=true
         public readBuffer(length: number): Buffer {
-            length = Math.min(length, this.length);
+            const p = this.position;
+            const l = this.length;
+            if (length < 0)
+                length = l;
+            length = Math.min(length, l - p);
             return files.fsReadBuffer(this.fd, length);
+        }
+
+        /**
+         * Reads the file at the current position and a string.
+         * @param length maximum number of bytes to read, if negative reads the entire file eg: 64
+         */
+        //% blockGap=8
+        //% blockId=fs_file_read_string block="%this|read string $length (chars)" advanced=true
+        public readString(length: number): String {
+            const p = this.position;
+            const l = this.length;
+            if (length < 0)
+                length = l;
+            length = Math.min(length, l - p);
+            return files.fsReadString(this.fd, length);
         }
 
         /**
@@ -231,6 +240,42 @@ namespace files {
         //% blockId=fs_file_read block="%this|read" advanced=true
         public read(): number {
             return files.fsRead(this.fd);
+        }
+
+        /**
+         * Reads the next line in the file at the current position
+         */
+        //% blockGap=8
+        //% blockId=fs_file_read_line block="%this|read line" advanced=true
+        public readLine(): string {
+            const nl = NEW_LINE;
+            const length = this.length;
+            const start = this.position;
+            // scan until new line or eol
+            let end = start;
+            while (end < length) {
+                let c = this.read();
+                if (c == 13 /* \r */ && this.position < length) {
+                    // try scanning for next character
+                    c = this.read();
+                }
+                if (c == 10 /* \n */) {
+                    // found a new line
+                    break;
+                }
+                // update end position
+                end = this.position;
+            }
+
+            // end of file shortcut
+            if (start == end) return "";
+
+            // remember current position
+            const pos = this.position;
+            this.position = start; // reset current cursor
+            const line = fsReadString(this.fd, end - start); // read line
+            this.position = pos; // skip new line
+            return line;
         }
     }
 }

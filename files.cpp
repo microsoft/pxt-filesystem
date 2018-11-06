@@ -188,16 +188,35 @@ Buffer fsReadBuffer(int fd, int length) {
         return mkBuffer(NULL, 0);
 
     initFileSystem();
-    Buffer buf = mkBuffer(NULL, length);
-
+    // compute position, length
+    int pos = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::Current);
+    int end = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::End);
+    MicroBitFileSystem::defaultFileSystem->seek(fd, pos, FileSystemSeekFlags::Set);
+    // cap length
+    length = min(length, end - pos);
+    auto buf = mkBuffer(NULL, length);
     int ret = MicroBitFileSystem::defaultFileSystem->read(fd, PXT_BUFFER_DATA(buf), buf->length);
-
     if (ret < 0) return mkBuffer(NULL, 0);
-    else if (ret != length) {
-        auto sbuf = mkBuffer(PXT_BUFFER_DATA(buf), ret);
-        decrRC(buf);
-        return sbuf;
-    }
+    else return buf;
+}
+
+/**
+*/
+//% weight=0 advanced=true
+String fsReadString(int fd, int length) {
+    if (fd < 0 || length < 0) 
+        return mkString(NULL, 0);
+
+    initFileSystem();    
+    // compute position, length
+    int pos = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::Current);
+    int end = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::End);
+    MicroBitFileSystem::defaultFileSystem->seek(fd, pos, FileSystemSeekFlags::Set);
+    // cap length
+    length = min(length, end - pos);
+    auto buf = mkString(NULL, length);
+    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, (uint8_t*)buf->data, buf->length);
+    if (ret < 0) return mkString(NULL, 0);
     else return buf;
 }
 
