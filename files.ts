@@ -4,6 +4,7 @@
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files {
     export let NEW_LINE = "\r\n";
+    export let TAB = "\t";
 
     /**
      * Appends text and a new line to a file
