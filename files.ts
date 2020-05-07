@@ -3,6 +3,38 @@
 */
 //% weight=5 color=#002050 icon="\uf0a0"
 namespace files {
+    export let NEW_LINE = "\r\n";
+    export let TAB = "\t";
+
+    /**
+     * Appends text and a new line to a file
+     * @param filename file name, eg: "output.txt"
+     * @param text the string to append to the end of the file
+     */
+    //% blockId="files_append_line" block="file %filename|append line %text"
+    //% blockExternalInputs=1 weight=90 blockGap=8
+    export function appendLine(filename: string, text: string): void {
+        const file = open(filename);
+        file.seek(0, FileSystemSeekFlags.End);
+        file.writeString(text);
+        file.writeString(NEW_LINE);
+        file.close();
+    }
+
+    /**
+     * Appends text to a file
+     * @param filename file name, eg: "output.txt"
+     * @param text the string to append to the end of the file
+     */
+    //% blockId="fs_append_string" block="file %filename|append string %text"
+    //% blockExternalInputs=1 weight=86 blockGap=8
+    export function appendString(filename: string, text: string): void {
+        const file = open(filename);
+        file.seek(0, FileSystemSeekFlags.End);
+        file.writeString(text);
+        file.close();
+    }
+
     /**
     * Appends a number to a file
     * @param filename file name, eg: "output.txt"
@@ -11,7 +43,24 @@ namespace files {
     //% blockId="fs_append_number" block="file %filename|append number %value"
     //% blockExternalInputs=1 weight=85
     export function appendNumber(filename: string, value: number) {
-        files.appendString(filename, value.toString());
+        const file = open(filename);
+        file.seek(0, FileSystemSeekFlags.End);
+        file.writeString(value.toString());
+        file.close();
+    }
+
+    /**
+     * Appends a buffer to the end of the file
+     * @param filename 
+     * @param buffer 
+     */
+    //% blockId="fs_append_buffer" block="file %filename|append buffer $buffer"
+    //% weight=84
+    export function appendBuffer(filename: string, buffer: Buffer) {
+        const file = open(filename);
+        file.seek(0, FileSystemSeekFlags.End);
+        file.writeBuffer(buffer);
+        file.close();
     }
 
     /**
@@ -110,7 +159,7 @@ namespace files {
          */
         //% blockGap=8
         //% blockId=fs_file_position block="%this|position" advanced=true
-        public position(): number {
+        public get position(): number {
             return files.fsSeek(this.fd, 0, FileSystemSeekFlags.Current);
         }
 
@@ -120,9 +169,21 @@ namespace files {
          */
         //% blockGap=8 advanced=true
         //% blockId=fs_file_set_position block="%this|set position %position"
-        public setPosition(position: number): void {
+        public set position(position: number) {
             files.fsSeek(this.fd, position, FileSystemSeekFlags.Set);
         }
+
+        /**
+         * Returns the file length in bytes
+         */
+        //% blockGap=8 advanced=true
+        //% blockId=fs_file_length block="%this|length"
+        public get length(): number {
+            files.fsSeek(this.fd, 0, FileSystemSeekFlags.End);
+            const l = files.fsSeek(this.fd, 0, FileSystemSeekFlags.Current);
+            files.fsSeek(this.fd, 0, FileSystemSeekFlags.Set);
+            return l;
+       }
 
         /**
          * Write a string to the file.
@@ -144,12 +205,32 @@ namespace files {
 
         /**
          * Reads the file at the current position and fills a buffer
-         * @param length maximum number of bytes to read, eg: 64
+         * @param length maximum number of bytes to read, if negative reads the entire file eg: 64
          */
         //% blockGap=8
-        //% blockId=fs_file_read_buffer block="%this|read buffer (bytes) %length" advanced=true
+        //% blockId=fs_file_read_buffer block="%this|read buffer $length (bytes)" advanced=true
         public readBuffer(length: number): Buffer {
+            const p = this.position;
+            const l = this.length;
+            if (length < 0)
+                length = l;
+            length = Math.min(length, l - p);
             return files.fsReadBuffer(this.fd, length);
+        }
+
+        /**
+         * Reads the file at the current position and a string.
+         * @param length maximum number of bytes to read, if negative reads the entire file eg: 64
+         */
+        //% blockGap=8
+        //% blockId=fs_file_read_string block="%this|read string $length (chars)" advanced=true
+        public readString(length: number): String {
+            const p = this.position;
+            const l = this.length;
+            if (length < 0)
+                length = l;
+            length = Math.min(length, l - p);
+            return files.fsReadString(this.fd, length);
         }
 
         /**
@@ -159,6 +240,42 @@ namespace files {
         //% blockId=fs_file_read block="%this|read" advanced=true
         public read(): number {
             return files.fsRead(this.fd);
+        }
+
+        /**
+         * Reads the next line in the file at the current position
+         */
+        //% blockGap=8
+        //% blockId=fs_file_read_line block="%this|read line" advanced=true
+        public readLine(): string {
+            const nl = NEW_LINE;
+            const length = this.length;
+            const start = this.position;
+            // scan until new line or eol
+            let end = start;
+            while (end < length) {
+                let c = this.read();
+                if (c == 13 /* \r */ && this.position < length) {
+                    // try scanning for next character
+                    c = this.read();
+                }
+                if (c == 10 /* \n */) {
+                    // found a new line
+                    break;
+                }
+                // update end position
+                end = this.position;
+            }
+
+            // end of file shortcut
+            if (start == end) return "";
+
+            // remember current position
+            const pos = this.position;
+            this.position = start; // reset current cursor
+            const line = fsReadString(this.fd, end - start); // read line
+            this.position = pos; // skip new line
+            return line;
         }
     }
 }

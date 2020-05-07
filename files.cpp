@@ -40,41 +40,6 @@ void initFileSystem()
 }
 
 /**
-    * Appends text and a new line to a file
-    * @param filename file name, eg: "output.txt"
-    * @param text the string to append to the end of the file
-    */
-//% blockId="files_append_line" block="file %filename|append line %text"
-//% blockExternalInputs=1 weight=90 blockGap=8
-void appendLine(StringData *filename, StringData *text)
-{
-    initFileSystem();
-    ManagedString fn(filename);
-    ManagedString t(text);
-    MicroBitFile f(fn);
-    f.append(t);
-    f.append("\r\n");
-    f.close();
-}
-
-/**
-    * Appends text to a file
-    * @param filename file name, eg: "output.txt"
-    * @param text the string to append to the end of the file
-    */
-//% blockId="fs_append_string" block="file %filename|append string %text"
-//% blockExternalInputs=1 weight=86 blockGap=8
-void appendString(StringData *filename, StringData *text)
-{
-    initFileSystem();
-    ManagedString fn(filename);
-    ManagedString t(text);
-    MicroBitFile f(fn);
-    f.append(t);
-    f.close();
-}
-
-/**
 * Reads the content of the file to send it to serial
 * @param filename file name, eg: "output.txt"
 */
@@ -223,16 +188,35 @@ Buffer fsReadBuffer(int fd, int length) {
         return mkBuffer(NULL, 0);
 
     initFileSystem();
-    Buffer buf = mkBuffer(NULL, length);
-
+    // compute position, length
+    int pos = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::Current);
+    int end = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::End);
+    MicroBitFileSystem::defaultFileSystem->seek(fd, pos, FileSystemSeekFlags::Set);
+    // cap length
+    length = min(length, end - pos);
+    auto buf = mkBuffer(NULL, length);
     int ret = MicroBitFileSystem::defaultFileSystem->read(fd, PXT_BUFFER_DATA(buf), buf->length);
-
     if (ret < 0) return mkBuffer(NULL, 0);
-    else if (ret != length) {
-        auto sbuf = mkBuffer(PXT_BUFFER_DATA(buf), ret);
-        decrRC(buf);
-        return sbuf;
-    }
+    else return buf;
+}
+
+/**
+*/
+//% weight=0 advanced=true
+String fsReadString(int fd, int length) {
+    if (fd < 0 || length < 0) 
+        return mkString(NULL, 0);
+
+    initFileSystem();    
+    // compute position, length
+    int pos = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::Current);
+    int end = MicroBitFileSystem::defaultFileSystem->seek(fd, 0, FileSystemSeekFlags::End);
+    MicroBitFileSystem::defaultFileSystem->seek(fd, pos, FileSystemSeekFlags::Set);
+    // cap length
+    length = min(length, end - pos);
+    auto buf = mkString(NULL, length);
+    int ret = MicroBitFileSystem::defaultFileSystem->read(fd, (uint8_t*)buf->data, buf->length);
+    if (ret < 0) return mkString(NULL, 0);
     else return buf;
 }
 
