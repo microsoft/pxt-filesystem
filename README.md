@@ -4,7 +4,7 @@ To use this package, go to https://makecode.microbit.org, click ``Extensions`` a
 
 ### ~ hint
 
-BETA - This package is still under development and subject to changes.
+DEPRECATED - This package is no longer maintained or supported.
 
 ### ~
 
